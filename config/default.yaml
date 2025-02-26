@@ -1,0 +1,31 @@
+crawler:
+  headless: true
+  wait_time: 3
+  max_depth: 2
+  elements_to_find:
+    - a
+    - button
+    - input
+    - select
+    - textarea
+    - "[role='button']"
+    - "[role='link']"
+    - "[role='checkbox']"
+    - "[role='radio']"
+
+analyzer:
+  model: "gpt-4"
+  max_flows: 5
+  min_elements_per_flow: 3
+
+generator:
+  user_story_format: "As a {user}, I want to {action} so that {benefit}."
+  test_categories:
+    - functional
+    - edge_cases
+    - error_handling
+    - performance
+    - accessibility
+
+output:
+  format: "json"

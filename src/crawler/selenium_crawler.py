@@ -16,6 +16,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from webdriver_manager.chrome import ChromeDriverManager
 
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
+
 from ..utils.config import Config
 from .element_parser import ElementParser
 
@@ -43,24 +47,18 @@ class SeleniumCrawler:
     
     def setup_driver(self):
         """
-        Set up the Selenium WebDriver with appropriate options.
+        Set up the Selenium WebDriver with Firefox.
         """
-        chrome_options = Options()
-        
+        firefox_options = FirefoxOptions()
+    
         if self.config.get('crawler.headless', True):
-            chrome_options.add_argument("--headless")
-        
-        chrome_options.add_argument("--window-size=1920,1080")
-        chrome_options.add_argument("--disable-notifications")
-        chrome_options.add_argument("--disable-popup-blocking")
-        chrome_options.add_argument("--disable-extensions")
-        
-        # Add user agent to mimic real browser
-        chrome_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-        
-        service = Service(ChromeDriverManager().install())
-        self.driver = webdriver.Chrome(service=service, options=chrome_options)
-        
+            firefox_options.add_argument("--headless")
+    
+        firefox_options.add_argument("--window-size=1920,1080")
+    
+        service = FirefoxService(GeckoDriverManager().install())
+        self.driver = webdriver.Firefox(service=service, options=firefox_options)
+    
         # Set page load timeout
         self.driver.set_page_load_timeout(self.config.get('crawler.page_load_timeout', 30))
     
